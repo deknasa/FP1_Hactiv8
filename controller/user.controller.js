@@ -46,6 +46,7 @@ exports.register = async (req, res) => {
         db.query(addNewUser) 
         .then((user) => {
             console.log('bb');
+            // generate jwt token user register successfully.
             const token = generateToken({
                 id: user.id,
                 email: user.email
@@ -72,5 +73,43 @@ exports.register = async (req, res) => {
             status: "FAIL",
             message: "INTERNAL SERVER ERROR"
         })
+    })
+}
+
+// FUNCTION FOR USER LOGIN
+exports.login = async (req, res) => {
+    // create request from body
+    const body = req.body;
+    const email = body.email;
+    const password = body.password;
+
+    // check email 
+    const checkEmail = `SELECT * FROM users WHERE email = '${email}'`
+    await db.query(checkEmail, (err, user) => {
+        if(!user.rows.length) {
+            res.status(400).json({
+                message: "Email Not Found please Sign UP",
+            });
+        }
+        // check hash password
+        let userPassword;
+        user.rows.forEach((userr) => {
+            userPassword = userr.password;
+        });
+        const isValid = bcrypt.compareSync(password, userPassword)
+        if (!isValid) {
+            return res.status(403).send({
+                message: "email and password not match",
+            });
+        }
+        // generate jwt token user login successfully.
+        const token = generateToken({
+            id: user.id,
+            email: user.email
+        })
+        res.status(200).send({
+            status: "SUKSES",
+            token: token,
+        });
     })
 }
