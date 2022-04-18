@@ -26,6 +26,12 @@ exports.register = async (req, res) => {
     const email = body.email;
     const password = body.password;
     
+
+    // if ( !email || !password) {
+    //     res.status(400).json({
+    //         message: "fail"
+    //     })
+
     // check email is registered or not using sql query
     var checkEmail = `SELECT * FROM users WHERE email = '${email}'`
     await db.query(checkEmail)
@@ -85,17 +91,21 @@ exports.login = async (req, res) => {
 
     // check email 
     const checkEmail = `SELECT * FROM users WHERE email = '${email}'`
-    await db.query(checkEmail, (err, user) => {
-        if(!user.rows.length) {
+    await db.query(checkEmail, (err, users) => {
+        if(!users.rows.length) {
             res.status(400).json({
                 message: "Email Not Found please Sign UP",
             });
         }
+        console.log(users.id);
         // check hash password
-        let userPassword;
-        user.rows.forEach((userr) => {
+        let userPassword, user_id, user_email;
+        users.rows.forEach((userr) => {
             userPassword = userr.password;
+            user_id = userr.id;
+            user_email = userr.email;
         });
+        console.log(user_id);
         const isValid = bcrypt.compareSync(password, userPassword)
         if (!isValid) {
             return res.status(403).send({
@@ -104,8 +114,8 @@ exports.login = async (req, res) => {
         }
         // generate jwt token user login successfully.
         const token = generateToken({
-            id: user.id,
-            email: user.email
+            id: user_id,
+            email: user_email
         })
         res.status(200).send({
             status: "SUKSES",
