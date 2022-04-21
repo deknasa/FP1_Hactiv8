@@ -9,10 +9,6 @@ app.use(express.json())
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/reflections', reflectionsRoutes)
 
-// app.get("/", (req, res) => {
-//     res.send("hello world");
-// });
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
