@@ -9,10 +9,10 @@ exports.postReflections = async (req, res) => {
 
     const create = `INSERT into reflections (success, low_point, take_away, owner_id) 
                     VALUES ('${success}', '${low_point}', '${take_away}', '${owner_id}') returning *`
-    db.query(create)
+    await db.query(create)
     .then((reflections) => {
         console.log(owner_id)
-        res.status(200).json({
+        res.status(201).json({
             status: "SUCCESS",
             message: "Reflection Successfully Created",
             data: reflections.rows
@@ -60,8 +60,9 @@ exports.updateReflections = async (req, res) => {
     const success = body.success;
     const low_point = body.low_point;
     const take_away = body.take_away;
-
-    const update ="UPDATE reflections SET success = $1, low_point = $2, take_away = $3 WHERE id = $4 returning *";
+    const update =
+        "UPDATE reflections SET success = $1, low_point = $2, take_away = $3 WHERE id = $4 returning *";
+    
     db.query(update, [success, low_point, take_away, id])
     .then((reflections) => {
         res.status(200).json({
@@ -74,7 +75,7 @@ exports.updateReflections = async (req, res) => {
         console.log(e);
         res.status(503).json({
             status: "FAIL",
-            message: "gagal memuat user"
+            message: "INTERNAL SERVER ERROR"
         })
     })
 }
