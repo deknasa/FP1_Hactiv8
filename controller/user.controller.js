@@ -9,73 +9,70 @@ exports.register = async (req, res) => {
     const readUser = `SELECT * FROM users WHERE email = '${email}'`
 
     await db.query(readUser)
-    .then(user => {
-        if (user.rows.length){
-            console.log('aa');
-            return res.status(400).json({
+    .then(result => {
+        if (result.rows.length){
+            res.status(402).json({
                 message: "Email already Exist",
             })
         }
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
+        else{
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(password, salt);
 
-        var createUser = `INSERT into users (email, password) VALUES ('${email}', '${hash}')`
-        db.query(createUser, (err, result) => {
-            if (err) {
-                res.status(401).json(err);
-            }
-            const token = generateToken({
-                email: email,
-            });
-            res.status(200).json({
-                message: "registration succes",
-                email: email,
-                token: token,
-            });
-        }) 
+            db.query("INSERT INTO users (email, password) values($1, $2) returning *", [email, hash])
+            .then((result) => {
+                const token = generateToken({
+                    id: result.rows[0].id,
+                    email: email,
+                });
+                res.status(200).json({
+                    token: token
+                });
+            }) 
+        }
     })
     .catch((e) => {
         console.log(e);
-        res.status(503).send({
-            status: "FAIL",
-            message: "INTERNAL SERVER ERROR"
+        res.status(503).json({
+            msg: "INTERNAL SERVER ERROR"
         })
     })
 }
 
 exports.login = async (req, res) => {
-    const body = req.body;
-    const email = body.email;
-    const password = body.password;
+    const email = req.body.email;
+    const password = req.body.password;
     const checkEmail = `SELECT * FROM users WHERE email = '${email}'`
 
-    return await db.query(checkEmail, (err, users) => {
-        if(!users.rows.length) {
+    return await db.query(checkEmail)
+    .then((user) => {
+        if(!user.rows.length) {
             res.status(400).json({
-                message: "Email Not Found please Sign UP",
+                message: "email not found",
             });
         }
-        console.log(users.id);
-        let userPassword, user_id, user_email;
-        users.rows.forEach((userr) => {
-            userPassword = userr.password;
-            user_id = userr.id;
-            user_email = userr.email;
-        });
-        console.log(user_id);
-        const isValid = bcrypt.compareSync(password, userPassword)
+        console.log(user);
+        const isValid = bcrypt.compareSync(password, user.rows[0].password)
+        console.log(user.rows[0].id);
+        console.log(user.rows[0].password);
         if (!isValid) {
-            return res.status(403).send({
+            return res.status(401).send({
                 message: "email and password not match",
             });
         }
         const token = generateToken({
-            id: user_id,
-            email: user_email
+            id: user.rows[0].id,
+            email: user.rows[0].email
         })
         res.status(200).send({
             status: "SUKSES",
             token: token,
         });
+    })
+    .catch((e) => {
+        console.log(e);
+        res.status(503).send({
+            msg: "INTERNAL SERVER ERROR"
+        })
     })
 }

@@ -1,50 +1,90 @@
-const db = require("../../config/db")
-const userController = require("../../controller/user.controller")
-const httpMocks = require("node-mocks-http")
-const bcrypt = require("bcrypt")
+const userController = require("../../controller/user.controller");
+const httpMocks = require("node-mocks-http");
+const bcrypt = require("bcrypt");
+const db = require("../../config/db").pool;
+const generate = require("../../midleware/authentication").generateToken;
 
-jest.mock('../../config/db')
+jest.mock("../../config/db");
+jest.mock("../../midleware/authentication");
 
 let req, res, next;
 
 beforeEach(() => {
-    req = httpMocks.createRequest()
-    res = httpMocks.createResponse()
-    bcrypt.hashSync = jest.fn()
-})
+    req = httpMocks.createRequest();
+    res = httpMocks.createResponse();
+    bcrypt.compareSync = jest.fn().mockImplementation(() => true);
+});
 
-// describe('UserController.register', () => {
-//     it('should return 200', async () => {
-//         db.query.mockResolvedValue(null);
-//         db.query.mockResolvedValue({
-//             name: "hello"
-//         });
-//         await userController.register(req, res)
-//         expect(res.statusCode).toEqual(200)
-//         // req.send('data sent in request')
-//     })
-// })
+describe("userController signUP", () => {
+    beforeAll(() => {
+        bcrypt.hashSync = jest.fn();
+        generate.mockReturnValue("get Token");
+    });
 
-describe('UserController.login', () => {
-    it('should return 200', async () => {
-        bcrypt.compareSync = jest.fn().mockImplementation(() => true)
-        db.query.mockResolvedValue({
-            name: "hello"
+    it("signUp should return 402 ", async() => {
+        const email = "email@gmail.com";
+        db.query.mockResolvedValue({ rows: [email] });
+        await userController.register(req, res);
+        expect(res.statusCode).toBe(402);
+    });
+
+    it("signUp should return 200 ", async() => {
+        db.query.mockResolvedValueOnce({ rows: [] });
+        db.query.mockResolvedValueOnce({
+            rows: [{
+                email: "email@gmail.com",
+                password: "password",
+            }, ],
         });
-        await userController.login(req, res)
-        expect(res.statusCode).toBe(200)
-    })
-    it('should return 400', async () => {
-        db.query.mockResolvedValue(null)
-        await userController.login(req, res)
-        expect(res.statusCode).toBe(400)
-    })
-    it('should return 403', async () => {
-        bcrypt.compareSync = jest.fn().mockImplementation(() => false)
+        await userController.register(req, res);
+        expect(res.statusCode).toBe(200);
+    });
+
+    it("signUp should return error 503", async() => {
+        const rejected = { message: "can't sign up" };
+        db.query.mockRejectedValue(rejected);
+        await userController.register(req, res);
+        expect(res.statusCode).toBe(503);
+    });
+});
+
+describe("userController signIn", () => {
+    beforeAll(() => {
+        bcrypt.hashSync = jest.fn();
+        generate.mockReturnValue("get Token");
+    });
+    it("signIn should return 400 ", async() => {
+        db.query.mockResolvedValue({ rows: [] });
+        await userController.login(req, res);
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("signIn should return 401 ", async() => {
         db.query.mockResolvedValue({
-            name: "hello"
-        })
-        await userController.login(req, res)
-        expect(res.statusCode).toBe(403)
-    })
-})
+            rows: [{
+                email: "email@gmail.com",
+                password: "password",
+            }, ],
+        });
+        bcrypt.compareSync.mockReturnValue(false);
+        await userController.login(req, res);
+        expect(res.statusCode).toBe(401);
+    });
+
+    it("signIn should return 200 ", async() => {
+        db.query.mockResolvedValue({
+            rows: [{
+                email: "email@gmail.com",
+                password: "password",
+            }, ],
+        });
+        await userController.login(req, res);
+        expect(res.statusCode).toBe(200);
+    });
+    it("signIn should return error 503", async() => {
+        const rejected = Promise.reject({ message: "can't sign in" });
+        db.query.mockResolvedValueOnce(rejected);
+        await userController.login(req, res);
+        expect(res.statusCode).toBe(503);
+    });
+});

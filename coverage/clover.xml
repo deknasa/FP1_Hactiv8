@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1650620332536" clover="3.2.0">
-  <project timestamp="1650620332537" name="All files">
-    <metrics statements="56" coveredstatements="18" conditionals="10" coveredconditionals="0" methods="10" coveredmethods="1" elements="76" coveredelements="19" complexity="0" loc="56" ncloc="56" packages="3" files="3" classes="3"/>
+<coverage generated="1651126407216" clover="3.2.0">
+  <project timestamp="1651126407217" name="All files">
+    <metrics statements="51" coveredstatements="13" conditionals="8" coveredconditionals="0" methods="10" coveredmethods="0" elements="69" coveredelements="13" complexity="0" loc="51" ncloc="51" packages="3" files="3" classes="3"/>
     <package name="config">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="db.js" path="F:\StudipHACTIV8\PROJECT\reflectionAPI\config\db.js">
+      <file name="db.js" path="F:\StudipHACTIV8\PROJECT\FINAL PROJECT 1\reflectionAPI\config\db.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -12,9 +12,9 @@
       </file>
     </package>
     <package name="controller">
-      <metrics statements="41" coveredstatements="10" conditionals="8" coveredconditionals="0" methods="7" coveredmethods="1"/>
-      <file name="user.controller.js" path="F:\StudipHACTIV8\PROJECT\reflectionAPI\controller\user.controller.js">
-        <metrics statements="41" coveredstatements="10" conditionals="8" coveredconditionals="0" methods="7" coveredmethods="1"/>
+      <metrics statements="35" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="7" coveredmethods="0"/>
+      <file name="user.controller.js" path="F:\StudipHACTIV8\PROJECT\FINAL PROJECT 1\reflectionAPI\controller\user.controller.js">
+        <metrics statements="35" coveredstatements="5" conditionals="6" coveredconditionals="0" methods="7" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -26,42 +26,36 @@
         <line num="11" count="0" type="stmt"/>
         <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="stmt"/>
-        <line num="49" count="3" type="stmt"/>
-        <line num="50" count="3" type="stmt"/>
-        <line num="52" count="3" type="stmt"/>
-        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="50" count="0" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="59" count="0" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="76" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
       </file>
     </package>
     <package name="midleware">
-      <metrics statements="12" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
-      <file name="authentication.js" path="F:\StudipHACTIV8\PROJECT\reflectionAPI\midleware\authentication.js">
-        <metrics statements="12" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <metrics statements="13" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <file name="authentication.js" path="F:\StudipHACTIV8\PROJECT\FINAL PROJECT 1\reflectionAPI\midleware\authentication.js">
+        <metrics statements="13" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -73,7 +67,8 @@
         <line num="13" count="0" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
       </file>
     </package>
   </project>
