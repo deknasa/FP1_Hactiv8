@@ -21,20 +21,20 @@ describe("userController signUP", () => {
         generate.mockReturnValue("get Token");
     });
 
-    it("signUp should return 402 ", async() => {
+    it("signUp should return 402", async() => {
         const email = "email@gmail.com";
         db.query.mockResolvedValue({ rows: [email] });
         await userController.register(req, res);
         expect(res.statusCode).toBe(402);
     });
 
-    it("signUp should return 200 ", async() => {
+    it("signUp should return 200", async() => {
         db.query.mockResolvedValueOnce({ rows: [] });
         db.query.mockResolvedValueOnce({
             rows: [{
                 email: "email@gmail.com",
                 password: "password",
-            }, ],
+            }],
         });
         await userController.register(req, res);
         expect(res.statusCode).toBe(200);
@@ -53,13 +53,13 @@ describe("userController signIn", () => {
         bcrypt.hashSync = jest.fn();
         generate.mockReturnValue("get Token");
     });
-    it("signIn should return 400 ", async() => {
+    it("signUp should return 400 ", async() => {
         db.query.mockResolvedValue({ rows: [] });
         await userController.login(req, res);
         expect(res.statusCode).toBe(400);
     });
 
-    it("signIn should return 401 ", async() => {
+    it("signUp should return 401 ", async() => {
         db.query.mockResolvedValue({
             rows: [{
                 email: "email@gmail.com",
@@ -71,7 +71,7 @@ describe("userController signIn", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    it("signIn should return 200 ", async() => {
+    it("signUp should return 200 ", async() => {
         db.query.mockResolvedValue({
             rows: [{
                 email: "email@gmail.com",
@@ -81,7 +81,7 @@ describe("userController signIn", () => {
         await userController.login(req, res);
         expect(res.statusCode).toBe(200);
     });
-    it("signIn should return error 503", async() => {
+    it("signUp should return error 503", async() => {
         const rejected = Promise.reject({ message: "can't sign in" });
         db.query.mockResolvedValueOnce(rejected);
         await userController.login(req, res);

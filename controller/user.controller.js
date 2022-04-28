@@ -39,40 +39,38 @@ exports.register = async (req, res) => {
     })
 }
 
-exports.login = async (req, res) => {
+exports.login = async(req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    const checkEmail = `SELECT * FROM users WHERE email = '${email}'`
 
-    return await db.query(checkEmail)
-    .then((user) => {
-        if(!user.rows.length) {
-            res.status(400).json({
-                message: "email not found",
+    await db
+        .query("SELECT * FROM users WHERE email = $1", [email])
+        .then((user) => {
+            if (!user.rows.length) {
+                return res.status(400).json({
+                    message: "email not found",
+                });
+            }
+            console.log(user);
+            const isValid = bcrypt.compareSync(password, user.rows[0].password);
+            if (!isValid) {
+                return res.status(401).send({
+                    message: "email and password not match",
+                });
+            }
+            const token = generateToken({
+                id: user.rows[0].id,
+                email: user.rows[0].email,
             });
-        }
-        console.log(user);
-        const isValid = bcrypt.compareSync(password, user.rows[0].password)
-        console.log(user.rows[0].id);
-        console.log(user.rows[0].password);
-        if (!isValid) {
-            return res.status(401).send({
-                message: "email and password not match",
+            return res.status(200).send({
+                status: "SUKSES",
+                token: token,
             });
-        }
-        const token = generateToken({
-            id: user.rows[0].id,
-            email: user.rows[0].email
         })
-        res.status(200).send({
-            status: "SUKSES",
-            token: token,
+        .catch((e) => {
+            console.log(e);
+            res.status(503).json({
+                msg: "INTERNAL SERVER ERROR",
+            });
         });
-    })
-    .catch((e) => {
-        console.log(e);
-        res.status(503).send({
-            msg: "INTERNAL SERVER ERROR"
-        })
-    })
-}
+};
