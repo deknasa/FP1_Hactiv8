@@ -1,4 +1,4 @@
-const db = require("../config/db").pool;
+const db = require("../config/db");
 
 const authorization = async(req, res, next) => {
     const idReflections = req.params.id;

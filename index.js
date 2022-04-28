@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
-const userRoutes = require('./routes/user')
+const userRoutes = require('./routes/users')
 const reflectionsRoutes = require('./routes/reflections')
 
 app.use(express.json())

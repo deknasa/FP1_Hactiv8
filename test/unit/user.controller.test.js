@@ -1,7 +1,7 @@
 const userController = require("../../controller/user.controller");
 const httpMocks = require("node-mocks-http");
 const bcrypt = require("bcrypt");
-const db = require("../../config/db").pool;
+const db = require("../../config/db");
 const generate = require("../../midleware/authentication").generateToken;
 
 jest.mock("../../config/db");

@@ -1,6 +1,6 @@
 const userAuthorization = require("../../midleware/authorization");
 const httpMocks = require("node-mocks-http");
-const db = require("../../config/db").pool;
+const db = require("../../config/db");
 
 jest.mock("../../config/db");
 jest.mock("../../midleware/authentication");

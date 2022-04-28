@@ -1,6 +1,6 @@
-const reflectionsController = require("../../controller/reflections-controller");
+const reflectionsController = require("../../controller/reflections.controllers");
 const httpMocks = require("node-mocks-http");
-const db = require("../../config/db").pool;
+const db = require("../../config/db");
 
 jest.mock("../../config/db");
 jest.mock("../../midleware/authentication");
@@ -13,12 +13,12 @@ beforeEach(() => {
 });
 
 describe("reflections get reflections", () => {
-    it("gett all  should return 200 ", async() => {
+    it("get reflections should return 200 ", async() => {
         db.query.mockResolvedValue({ id: 5 });
         await reflectionsController.getReflections(req, res);
         expect(res.statusCode).toBe(200);
     });
-    it("gett all  should return 503 ", async() => {
+    it("get reflections should return 503 ", async() => {
         const rejected = Promise.reject({ message: "can't sign up" });
         db.query.mockResolvedValue(rejected);
         await reflectionsController.getReflections(req, res);
