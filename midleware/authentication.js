@@ -1,26 +1,25 @@
-var jwt = require('jsonwebtoken');
-let privateKey = 'helloworld'
+const jwt = require("jsonwebtoken");
+const privatKey = "secret";
 
-const verify = async (req, res, next) => {
-    const token = req.headers["x-access-token"]    
-    jwt.verify(token, privateKey, (err, decoded)=> {
-        if(err) {
+const verify = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+    jwt.verify(token, privatKey, (err, decoded) => {
+        if (err) {
             return res.status(401).send({
-                err: err
-            })
+                err: err,
+            });
         }
-        req.id = decoded.id
+        req.id = decoded.id;
         next();
     });
-}
+};
 
 const generateToken = (payload) => {
-    return jwt.sign(payload, privateKey, {
-         algorithm: 'HS256',
-         expiresIn: "1h"
+    const token = jwt.sign(payload, privatKey, {
+        algorithm: "HS256",
+        expiresIn: "1H",
     });
-}
-module.exports = {
-    verify,
-    generateToken
-}
+    return token;
+};
+
+module.exports = { verify, generateToken };

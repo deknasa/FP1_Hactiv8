@@ -8,17 +8,17 @@ const authorization = async(req, res, next) => {
     await db
         .query(select, [idReflections])
         .then((result) => {
-            let idReflections;
+            let reflectionsOwner_id;
             result.rows.forEach((userr) => {
-                idReflections = userr.owner_id;
+                reflectionsOwner_id = userr.owner_id;
             });
             if (!result.rows.length) {
                 res.status(401).json({
                     message: "Reflections Not Found",
                 });
-            } else if (idReflections !== owner_id) {
+            } else if (reflectionsOwner_id !== owner_id) {
                 return res.status(402).json({
-                    message: `User id with ${owner_id} not match with this reflections`,
+                    message: `User id  ${owner_id} not match with this reflections`,
                 });
             } else {
                 return next();

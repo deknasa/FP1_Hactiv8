@@ -3,10 +3,13 @@ const router = express.Router()
 const verify = require("../midleware/authentication").verify
 const authorization = require("../midleware/authorization").authorization
 const reflectionsController = require('../controller/reflections.controllers')
+const { reflectionsValidation, reflectionsById } = require("../midleware/validation")
 
-router.post('/', verify, reflectionsController.postReflections)
-router.get('/', verify, reflectionsController.getReflections)
-router.put('/updateReflections/:id'), authorization, reflectionsController.updateReflections
-router.get('/getAllReflections', reflectionsController.getAllReflections)
+router.use(verify);
+
+router.post('/', reflectionsValidation, reflectionsController.postReflections)
+router.get('/', reflectionsController.getReflections)
+router.put('/:id', reflectionsById, authorization, reflectionsValidation, reflectionsController.updateReflections)
+router.delete('/:id',reflectionsById, authorization, reflectionsController.deleteReflections)
 
 module.exports = router
